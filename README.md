@@ -2,13 +2,13 @@
 
 simple redis search index
 
-## Installation
+### Installation
 
 ```
 npm install searchlight
 ```
 
-## Example
+### Example
 
 ```coffeescript
 redis = require 'redis'
@@ -43,7 +43,7 @@ searchlight.rebuild documentIdTextMap, (err) ->
                 client.quit()
 ```
 
-## API
+### API
 
 - `constructor(redisClient, [options])`
     - Number `options.minPrefixLength`
@@ -51,4 +51,4 @@ searchlight.rebuild documentIdTextMap, (err) ->
 - `search(searchstring)`
     - String `searchstring`
 
-## License: MIT
+### License: MIT
