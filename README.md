@@ -12,7 +12,7 @@ npm install searchlight
 
 ```coffeescript
 redis = require 'redis'
-Searchlight = require './lib/searchlight'
+Searchlight = require 'searchlight'
 
 client = redis.createClient()
 client.select 10
