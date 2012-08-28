@@ -43,12 +43,4 @@ searchlight.rebuild documentIdTextMap, (err) ->
                 client.quit()
 ```
 
-### API
-
-- `constructor(redisClient, [options])`
-    - Number `options.minPrefixLength`
-- `rebuild(documentIdTextMap)`
-- `search(searchstring)`
-    - String `searchstring`
-
 ### License: MIT
