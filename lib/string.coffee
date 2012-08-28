@@ -25,7 +25,7 @@ module.exports =
 
         # remove everything except for lowercase chars from each word
 
-        processed = words.map (word) -> word.replace /[^a-z]/g, ''
+        processed = words.map (word) -> word.replace /[^a-z0-9]/g, ''
 
         # remove empty words
         # remove duplicates

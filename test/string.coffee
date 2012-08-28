@@ -25,12 +25,16 @@ module.exports =
             test.done()
 
         'single word is tokenized correctly': (test) ->
-            test.deepEqual ['traenen'], string.tokenize '   8Trä8nen890   '
+            test.deepEqual ['traenen'], string.tokenize '   ,Tränen!   '
+            test.done()
+
+        'digits are not ignored': (test) ->
+            test.deepEqual ['360', 'grad'], string.tokenize '   360  Grad   '
             test.done()
 
         'complex string is tokenized correctly': (test) ->
             input = "Blut, Schweiß und Tränen gibt’s umsonst. Alles andere kostet Geld. Zum Beispiel Kostüme, Requisiten, Beleuchtung, Bühnenbild, Plakate und und und. Dafür sammeln wir – damit wir dem Publikum am 9. und 10. Juni 2012 mit dem Tanzstück \"Gräfin Báthory\" zwei unvergessliche Abende bereiten können."
-            expected = 'blut schwei und traenen gibts umsonst alles andere kostet geld zum beispiel kostueme requisiten beleuchtung buehnenbild plakate dafuer sammeln wir damit dem publikum am juni mit tanzstueck graefin bthory zwei unvergessliche abende bereiten koennen'.split ' '
+            expected = 'blut schwei und traenen gibts umsonst alles andere kostet geld zum beispiel kostueme requisiten beleuchtung buehnenbild plakate dafuer sammeln wir damit dem publikum am 9 10 juni 2012 mit tanzstueck graefin bthory zwei unvergessliche abende bereiten koennen'.split ' '
             test.deepEqual expected, string.tokenize input
             test.done()
 
@@ -108,7 +112,7 @@ module.exports =
 
             index = string.makeIndex 3,
                 1: 'hochzeit tiefzeit'
-                abcd: 'tief, hoch10'
+                abcd: 'tief, hoch'
                 3678: 'zeit, tie äre'
 
             test.deepEqual index,
