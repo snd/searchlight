@@ -2,7 +2,7 @@
     "name": "searchlight",
     "description": "simple redis search index",
     "author": "Maximilian Krüger <kruemaxi@googlemail.com> (http://github.com/snd)",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "main": "./lib/searchlight",
     "repository": {
         "type": "git",
