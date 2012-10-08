@@ -1,14 +1,14 @@
 # searchlight
 
-simple redis search index
+searchlight is a simple redis search index for nodejs
 
-### Installation
+### install
 
 ```
 npm install searchlight
 ```
 
-### Example
+### use
 
 ```coffeescript
 redis = require 'redis'
@@ -43,4 +43,4 @@ searchlight.rebuild documentIdTextMap, (err) ->
                 client.quit()
 ```
 
-### License: MIT
+### license: MIT
