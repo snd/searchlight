@@ -20,3 +20,4 @@ module.exports = (redisClient, options) ->
     s.options = options || {}
     s.options.minPrefixLength ?= 3
     s
+
