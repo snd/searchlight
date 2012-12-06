@@ -14,12 +14,12 @@ npm install searchlight
 
 ```coffeescript
 redis = require 'redis'
-Searchlight = require 'searchlight'
+newSearchlight = require 'searchlight'
 
 client = redis.createClient()
 client.select 10
 
-searchlight = new Searchlight client
+searchlight = newSearchlight client
 
 documentIdTextMap =
     1: "The one thing we can never get enough of is love. And the one thing we never give enough is love."
