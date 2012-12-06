@@ -1,18 +1,34 @@
 {
     "name": "searchlight",
-    "description": "simple redis search index",
-    "author": "Maximilian Krüger <kruemaxi@googlemail.com> (http://github.com/snd)",
     "version": "0.1.1",
-    "main": "./lib/searchlight",
+    "description": "searchlight is a simple redis search index for nodejs",
+    "homepage": "http://github.com/snd/searchlight",
+    "author": {
+        "name": "Maximilian Krüger",
+        "email": "kruemaxi@gmail.com",
+        "url": "http://github.com/snd"
+    },
+    "bugs": {
+        "url": "http://github.com/snd/searchlight/issues",
+        "email": "kruemaxi@gmail.com"
+    },
     "repository": {
         "type": "git",
         "url": "git://github.com/snd/searchlight.git"
     },
+    "licenses": {
+        "type": "MIT",
+        "url": "git://github.com/snd/searchlight/LICENSE"
+    },
+    "engines": {
+        "node": ">=0.8.5"
+    },
     "dependencies": {
-        "underscore": "1.3.3",
-        "underscore.string": "2.2.0rc"
+        "coffee-script": "1.4.0",
+        "underscore": "1.4.3",
+        "underscore.string": "2.3.1"
     },
     "devDependencies": {
-        "nodeunit": "*"
+        "nodeunit": "0.7.4"
     }
 }
