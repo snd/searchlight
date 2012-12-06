@@ -1,5 +1,7 @@
 # searchlight
 
+[![Build Status](https://travis-ci.org/snd/searchlight.png)](https://travis-ci.org/snd/searchlight)
+
 searchlight is a simple redis search index for nodejs
 
 ### install
