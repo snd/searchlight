@@ -1,6 +1,6 @@
 {
     "name": "searchlight",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "searchlight is a simple redis search index for nodejs",
     "homepage": "http://github.com/snd/searchlight",
     "author": {
