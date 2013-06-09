@@ -18,6 +18,50 @@ module.exports =
             throw err if err?
             done()
 
+    'searching an index for existing search terms': (test) ->
+        config = this.config
+
+        index =
+            0: ['it', 'is', 'what', 'it', 'is']
+            1: ['what', 'is', 'it']
+            2: ['it', 'is', 'a', 'banana']
+
+        invertedIndex = searchlight.index.invert index
+
+        searchlight.redis.set config, invertedIndex, (err) ->
+            throw err if err?
+
+            searchlight.redis.search config, ['it', 'is'], (err, results) ->
+                throw err if err?
+                test.deepEqual results, ['0', '1', '2']
+
+                searchlight.redis.search config, ['what'], (err, results) ->
+                    throw err if err?
+                    test.deepEqual results, ['0', '1']
+
+                    searchlight.redis.search config, ['a', 'banana'], (err, results) ->
+                        throw err if err?
+                        test.deepEqual results, ['2']
+                        test.done()
+
+    'searching an index for not existing search terms': (test) ->
+        config = this.config
+
+        index =
+            0: ['it', 'is', 'what', 'it', 'is']
+            1: ['what', 'is', 'it']
+            2: ['it', 'is', 'a', 'banana']
+
+        invertedIndex = searchlight.index.invert index
+
+        searchlight.redis.set config, invertedIndex, (err) ->
+            throw err if err?
+
+            searchlight.redis.search config, ['what', 'banana'], (err, results) ->
+                throw err if err?
+                test.deepEqual results, []
+                test.done()
+
     'the stored index is identical to the last set index': (test) ->
         config = this.config
 
@@ -154,4 +198,88 @@ module.exports =
                 searchlight.redis.get config, (err, storedIndex) ->
                     throw err if err?
                     test.deepEqual invertedIndex2, storedIndex
+                    test.done()
+
+    'removing no documents leaves the index unchanged': (test) ->
+        config = this.config
+
+        index =
+            0: ['it', 'is', 'what', 'it', 'is']
+            1: ['what', 'is', 'it']
+            2: ['it', 'is', 'a', 'banana']
+
+        invertedIndex = searchlight.index.invert index
+
+        searchlight.redis.set config, invertedIndex, (err) ->
+            throw err if err?
+
+            searchlight.redis.remove config, [], (err) ->
+                throw err if err?
+
+                searchlight.redis.get config, (err, storedIndex) ->
+                    throw err if err?
+                    test.deepEqual invertedIndex, storedIndex
+                    test.done()
+
+    'removing not existing documents leaves the index unchanged': (test) ->
+        config = this.config
+
+        index =
+            0: ['it', 'is', 'what', 'it', 'is']
+            1: ['what', 'is', 'it']
+            2: ['it', 'is', 'a', 'banana']
+
+        invertedIndex = searchlight.index.invert index
+
+        searchlight.redis.set config, invertedIndex, (err) ->
+            throw err if err?
+
+            searchlight.redis.remove config, [3, 4, 5], (err) ->
+                throw err if err?
+
+                searchlight.redis.get config, (err, storedIndex) ->
+                    throw err if err?
+                    test.deepEqual invertedIndex, storedIndex
+                    test.done()
+
+    'setting an empty index empties the index': (test) ->
+        config = this.config
+
+        index =
+            0: ['it', 'is', 'what', 'it', 'is']
+            1: ['what', 'is', 'it']
+            2: ['it', 'is', 'a', 'banana']
+
+        invertedIndex = searchlight.index.invert index
+
+        searchlight.redis.set config, invertedIndex, (err) ->
+            throw err if err?
+
+            searchlight.redis.set config, {}, (err) ->
+                throw err if err?
+
+                searchlight.redis.get config, (err, storedIndex) ->
+                    throw err if err?
+                    test.deepEqual storedIndex, {}
+                    test.done()
+
+    'adding an empty index leaves the index unchanged': (test) ->
+        config = this.config
+
+        index =
+            0: ['it', 'is', 'what', 'it', 'is']
+            1: ['what', 'is', 'it']
+            2: ['it', 'is', 'a', 'banana']
+
+        invertedIndex = searchlight.index.invert index
+
+        searchlight.redis.set config, invertedIndex, (err) ->
+            throw err if err?
+
+            searchlight.redis.add config, {}, (err) ->
+                throw err if err?
+
+                searchlight.redis.get config, (err, storedIndex) ->
+                    throw err if err?
+                    test.deepEqual invertedIndex, storedIndex
                     test.done()
