@@ -94,6 +94,11 @@ module.exports =
         unless 'function' is typeof cb
             throw new Error 'cb argument must be a function'
 
+        if ids.length is 0
+            process.nextTick ->
+                cb()
+            return
+
         prefix = config.keyPrefix or defaultKeyPrefix
 
         config.redis.eval lua.remove, 0, prefix, JSON.stringify(ids), cb
