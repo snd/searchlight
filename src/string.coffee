@@ -28,17 +28,20 @@ module.exports =
 
     tokenize: (string) ->
 
-        # make lowercase
-        # replace umlauts
-        # split into words (split by whitespace)
-        # remove non alphanumeric chars
+        string = string.toLowerCase()
+
+        # replace - and _ by whitespace to later break words on it
+        string = string.replace /[\-_]/g, ' '
+
+        string = module.exports.replaceUmlauts string
+
+        # split into words
+        words = _s.words string
+
+        words = words.map module.exports.removeNonAlphanumeric
+
         # remove empty words
+        words = words.filter (word) -> word isnt ''
+
         # remove duplicates
-
-        lowerCase = string.toLowerCase().replace /[\-_]/g, ' '
-
-        words = _s.words module.exports.replaceUmlauts lowerCase
-
-        processed = words.map module.exports.removeNonAlphanumeric
-
-        _.uniq processed.filter (word) -> word isnt ''
+        _.uniq words
