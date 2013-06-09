@@ -1,2 +1,4 @@
 node_modules/**
-example.coffee
+src/*.js
+test/*.js
+raw.md

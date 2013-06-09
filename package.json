@@ -1,7 +1,8 @@
 {
     "name": "searchlight",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "description": "searchlight is a simple redis search index for nodejs",
+    "keywords": ["redis", "inverted", "search", "index", "prefix", "full", "text"],
     "homepage": "http://github.com/snd/searchlight",
     "author": {
         "name": "Maximilian Krüger",
@@ -24,11 +25,19 @@
         "node": ">=0.8.5"
     },
     "dependencies": {
-        "coffee-script": "1.4.0",
-        "underscore": "1.4.3",
+        "underscore": "1.4.4",
         "underscore.string": "2.3.1"
     },
     "devDependencies": {
-        "nodeunit": "0.7.4"
+        "nodeunit": "1.6.3",
+        "coffee-script": "0.8"
+    },
+    "main": "src/searchlight",
+    "scripts": {
+        "prepublish": "coffee --bare --compile --lint --output src src/*.coffee",
+        "postpublish": "rm src/*.js",
+        "pretest": "coffee --bare --compile --lint --output src src/*.coffee && coffee --bare --compile --lint --output test test/*.coffee",
+        "posttest": "rm src/*.js && rm test/*.js",
+        "test": "nodeunit test"
     }
 }
