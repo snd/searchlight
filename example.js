@@ -33,13 +33,13 @@ var invertedIndex = searchlight.index.invert(index);
 console.log('invertedIndex:\n', invertedIndex);
 
 var searchConfig = {
-    redis: redis.createClient(),
+    redis: redis.createClient()
 };
 
 searchlight.redis.set(searchConfig, invertedIndex, function(err) {
     if (err) throw err;
 
-    var searchText = 'snow white rose red';
+    var searchText = 'snow-white rose-red';
 
     console.log('searchText:\n', searchText);
 
