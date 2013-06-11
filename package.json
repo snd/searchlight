@@ -29,8 +29,8 @@
         "underscore.string": "2.3.1"
     },
     "devDependencies": {
-        "nodeunit": "1.6.3",
-        "coffee-script": "0.8"
+        "coffee-script": "1.6.3",
+        "nodeunit": "0.8"
     },
     "main": "src/searchlight",
     "scripts": {
