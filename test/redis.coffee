@@ -28,7 +28,7 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
             searchlight.redis.search config, ['it', 'is'], (err, results) ->
@@ -54,7 +54,7 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
             searchlight.redis.search config, ['what', 'banana'], (err, results) ->
@@ -72,34 +72,13 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
             searchlight.redis.get config, (err, storedIndex) ->
                 throw err if err?
                 test.deepEqual invertedIndex, storedIndex
                 test.done()
-
-    'empty empties the index ': (test) ->
-        config = this.config
-
-        index =
-            0: ['it', 'is', 'what', 'it', 'is']
-            1: ['what', 'is', 'it']
-            2: ['it', 'is', 'a', 'banana']
-
-        invertedIndex = searchlight.index.invert index
-
-        searchlight.redis.set config, invertedIndex, (err) ->
-            throw err if err?
-
-            searchlight.redis.empty config, (err, results) ->
-                throw err if err?
-
-                searchlight.redis.get config, (err, storedIndex) ->
-                    throw err if err?
-                    test.deepEqual storedIndex, {}
-                    test.done()
 
     'remove removes a document from the index': (test) ->
         config = this.config
@@ -111,7 +90,7 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
             searchlight.redis.remove config, [2], (err, results) ->
@@ -135,7 +114,7 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
             searchlight.redis.remove config, [0, 1, 2], (err, results) ->
@@ -146,7 +125,7 @@ module.exports =
                     test.deepEqual storedIndex, {}
                     test.done()
 
-    'add extends the index': (test) ->
+    'merge extends the index': (test) ->
         config = this.config
 
         index =
@@ -163,12 +142,12 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
             invertedAddition = searchlight.index.invert addition
 
-            searchlight.redis.add config, invertedAddition, (err) ->
+            searchlight.redis.merge config, invertedAddition, (err) ->
                 throw err if err?
 
                 searchlight.redis.get config, (err, storedIndex) ->
@@ -176,7 +155,7 @@ module.exports =
                     test.deepEqual storedIndex, searchlight.index.invert combined
                     test.done()
 
-    'set overwrites the index': (test) ->
+    'rebuild overwrites the index': (test) ->
         config = this.config
 
         index =
@@ -189,10 +168,10 @@ module.exports =
         invertedIndex = searchlight.index.invert index
         invertedIndex2 = searchlight.index.invert index2
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
-            searchlight.redis.set config, invertedIndex2, (err) ->
+            searchlight.redis.rebuild config, invertedIndex2, (err) ->
                 throw err if err?
 
                 searchlight.redis.get config, (err, storedIndex) ->
@@ -210,7 +189,7 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
             searchlight.redis.remove config, [], (err) ->
@@ -231,7 +210,7 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
             searchlight.redis.remove config, [3, 4, 5], (err) ->
@@ -252,10 +231,10 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
-            searchlight.redis.set config, {}, (err) ->
+            searchlight.redis.rebuild config, {}, (err) ->
                 throw err if err?
 
                 searchlight.redis.get config, (err, storedIndex) ->
@@ -263,7 +242,7 @@ module.exports =
                     test.deepEqual storedIndex, {}
                     test.done()
 
-    'adding an empty index leaves the index unchanged': (test) ->
+    'merging an empty index leaves the index unchanged': (test) ->
         config = this.config
 
         index =
@@ -273,10 +252,10 @@ module.exports =
 
         invertedIndex = searchlight.index.invert index
 
-        searchlight.redis.set config, invertedIndex, (err) ->
+        searchlight.redis.rebuild config, invertedIndex, (err) ->
             throw err if err?
 
-            searchlight.redis.add config, {}, (err) ->
+            searchlight.redis.merge config, {}, (err) ->
                 throw err if err?
 
                 searchlight.redis.get config, (err, storedIndex) ->
