@@ -18,27 +18,29 @@ module.exports =
                 replaced = replaced.replace umlaut, replacement
         return replaced
 
-    removeNonAlphanumeric: (string) ->
-        string.replace /[^a-z0-9]/g, ''
+    removeSpecialChars: (string) ->
+        string.replace /[^a-z0-9 ]/g, ''
 
     inits: (string, minPrefixLen = 1) ->
         throw new Error 'minPrefixLen must be > 0' if minPrefixLen < 1
         return [] if string is '' or minPrefixLen > string.length
         [minPrefixLen..string.length].map (i) -> string.substr 0, i
 
-    tokenize: (string) ->
-
+    normalize: (string) ->
         string = string.toLowerCase()
+        string = string.trim()
+        string = module.exports.replaceUmlauts string
+        module.exports.removeSpecialChars string
+
+    tokenize: (string) ->
 
         # replace - and _ by whitespace to later break words on it
         string = string.replace /[\-_]/g, ' '
 
-        string = module.exports.replaceUmlauts string
-
         # split into words
         words = _s.words string
 
-        words = words.map module.exports.removeNonAlphanumeric
+        words = words.map module.exports.normalize
 
         # remove empty words
         words = words.filter (word) -> word isnt ''
