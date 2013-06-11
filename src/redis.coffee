@@ -56,9 +56,8 @@ module.exports =
 
     # time complexity: O(m) where m is the number of keys in the
     # invertedIndex object.
-    # add is atomic.
 
-    add: (config, invertedIndex, cb) ->
+    merge: (config, invertedIndex, cb) ->
         checkConfig config
         unless 'object' is typeof invertedIndex
             throw new Error 'invertedIndex argument must be an object'
@@ -67,13 +66,13 @@ module.exports =
 
         prefix = config.keyPrefix or defaultKeyPrefix
 
-        config.redis.eval lua.add, 0, prefix, JSON.stringify(invertedIndex), cb
+        config.redis.eval lua.merge, 0, prefix, JSON.stringify(invertedIndex), cb
 
     # same as empty and then add but in one atomic operation.
     # time complexity: O(n + m) where n is the number of keys in the database
     # and m is the number of keys in the invertedIndex object.
 
-    set: (config, invertedIndex, cb) ->
+    rebuild: (config, invertedIndex, cb) ->
         checkConfig config
         unless 'object' is typeof invertedIndex
             throw new Error 'invertedIndex argument must be an object'
@@ -82,10 +81,9 @@ module.exports =
 
         prefix = config.keyPrefix or defaultKeyPrefix
 
-        config.redis.eval lua.set, 0, prefix, JSON.stringify(invertedIndex), cb
+        config.redis.eval lua.rebuild, 0, prefix, JSON.stringify(invertedIndex), cb
 
     # time complexity: O(n) where n is the number of keys in the database.
-    # delete is atomic.
 
     remove: (config, ids, cb) ->
         checkConfig config
@@ -101,18 +99,27 @@ module.exports =
 
         prefix = config.keyPrefix or defaultKeyPrefix
 
-        config.redis.eval lua.remove, 0, prefix, JSON.stringify(ids), cb
+        config.redis.eval lua.removeAndMerge,
+            0,
+            prefix,
+            JSON.stringify(ids),
+            '{}',
+            cb
 
-    # empty the entire search index
-    # returns the count of cleared keys
-    # time complexity: O(n) where n is the number of keys in the database.
-    # clear is atomic.
-
-    empty: (config, cb) ->
+    removeAndMerge: (config, ids, partialInvertedIndex, cb) ->
         checkConfig config
+        unless Array.isArray ids
+            throw new Error 'ids argument must be an array'
+        unless 'object' is typeof partialInvertedIndex
+            throw new Error 'partialInvertedIndex argument must be an object'
         unless 'function' is typeof cb
             throw new Error 'cb argument must be a function'
 
         prefix = config.keyPrefix or defaultKeyPrefix
 
-        config.redis.eval lua.empty, 0, prefix, cb
+        config.redis.eval lua.removeAndMerge,
+            0,
+            prefix,
+            JSON.stringify(ids),
+            JSON.stringify(partialInvertedIndex),
+            cb
