@@ -34,9 +34,9 @@
     },
     "main": "src/searchlight",
     "scripts": {
-        "prepublish": "coffee --bare --compile --lint --output src src/*.coffee",
+        "prepublish": "coffee --bare --compile --output src src/*.coffee",
         "postpublish": "rm src/*.js",
-        "pretest": "coffee --bare --compile --lint --output src src/*.coffee && coffee --bare --compile --lint --output test test/*.coffee",
+        "pretest": "coffee --bare --compile --output src src/*.coffee && coffee --bare --compile --output test test/*.coffee",
         "posttest": "rm src/*.js && rm test/*.js",
         "test": "nodeunit test"
     }
