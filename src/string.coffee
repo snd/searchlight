@@ -32,18 +32,9 @@ module.exports =
         string = module.exports.replaceUmlauts string
         module.exports.removeSpecialChars string
 
-    tokenize: (string) ->
+    # split words on whitespace or - or _
+    words: (string) ->
+        _s.words string.replace /[\-_]/g, ' '
 
-        # replace - and _ by whitespace to later break words on it
-        string = string.replace /[\-_]/g, ' '
-
-        # split into words
-        words = _s.words string
-
-        words = words.map module.exports.normalize
-
-        # remove empty words
-        words = words.filter (word) -> word isnt ''
-
-        # remove duplicates
-        _.uniq words
+    uniqueNonEmptyWords: (words) ->
+        _.uniq words.filter (word) -> word isnt ''
