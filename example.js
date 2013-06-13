@@ -86,17 +86,17 @@ var redisClient = redis.createClient();
 
 var titleConfig = {
     redis: redisClient,
-    keyPrefix: 'searchlight:title:'
+    prefix: 'searchlight:title:'
 };
 
 var genreConfig = {
     redis: redisClient,
-    keyPrefix: 'searchlight:genre:'
+    prefix: 'searchlight:genre:'
 };
 
 var castConfig = {
     redis: redisClient,
-    keyPrefix: 'searchlight:cast:'
+    prefix: 'searchlight:cast:'
 };
 
 var rebuildIndexes = function() {
