@@ -2,7 +2,7 @@ _ = require 'underscore'
 
 lua = require './lua'
 
-defaultKeyPrefix = 'searchlight:'
+defaultPrefix = 'searchlight:'
 
 checkConfig = (config) ->
     unless 'object' is typeof config
@@ -31,7 +31,7 @@ module.exports =
                 cb null, []
             return
 
-        prefix = config.keyPrefix or defaultKeyPrefix
+        prefix = config.prefix or defaultPrefix
 
         keys = searchTerms.map (term) -> prefix + term
 
@@ -44,7 +44,7 @@ module.exports =
         unless 'function' is typeof cb
             throw new Error 'cb argument must be a function'
 
-        prefix = config.keyPrefix or defaultKeyPrefix
+        prefix = config.prefix or defaultPrefix
 
         config.redis.eval lua.get, 0, prefix, (err, result) ->
             return cb err if err?
@@ -64,7 +64,7 @@ module.exports =
         unless 'function' is typeof cb
             throw new Error 'cb argument must be a function'
 
-        prefix = config.keyPrefix or defaultKeyPrefix
+        prefix = config.prefix or defaultPrefix
 
         config.redis.eval lua.merge, 0, prefix, JSON.stringify(invertedIndex), cb
 
@@ -79,7 +79,7 @@ module.exports =
         unless 'function' is typeof cb
             throw new Error 'cb argument must be a function'
 
-        prefix = config.keyPrefix or defaultKeyPrefix
+        prefix = config.prefix or defaultPrefix
 
         config.redis.eval lua.rebuild, 0, prefix, JSON.stringify(invertedIndex), cb
 
@@ -97,7 +97,7 @@ module.exports =
                 cb()
             return
 
-        prefix = config.keyPrefix or defaultKeyPrefix
+        prefix = config.prefix or defaultPrefix
 
         config.redis.eval lua.removeAndMerge,
             0,
@@ -115,7 +115,7 @@ module.exports =
         unless 'function' is typeof cb
             throw new Error 'cb argument must be a function'
 
-        prefix = config.keyPrefix or defaultKeyPrefix
+        prefix = config.prefix or defaultPrefix
 
         config.redis.eval lua.removeAndMerge,
             0,
