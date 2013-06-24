@@ -30,7 +30,8 @@
     },
     "devDependencies": {
         "coffee-script": "1.6.3",
-        "nodeunit": "0.8"
+        "nodeunit": "0.8",
+        "redis": "0.8.3"
     },
     "main": "src/searchlight",
     "scripts": {
