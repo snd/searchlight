@@ -1,7 +1,7 @@
 {
     "name": "searchlight",
     "version": "0.3.0",
-    "description": "searchlight is a simple redis search index for nodejs",
+    "description": "searchlight is a simple and fast inverted search index stored in redis",
     "keywords": ["redis", "inverted", "search", "index", "prefix", "full", "text"],
     "homepage": "http://github.com/snd/searchlight",
     "author": {
