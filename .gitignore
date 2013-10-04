@@ -1,5 +1,4 @@
 node_modules/**
-src/*.js
 test/*.js
 text.md
 **.DS_Store
